@@ -8,6 +8,10 @@ const reducer = (state,action) => {
       case "SUM":
         state = state + ( action.payloadOne + action.payloadTwo);
         return state;
+      case "SUBSTRACT":
+        console.log(state,action.payloadOne,action.payloadTwo);
+        state = state + (action.payloadOne - action.payloadTwo);
+        return state
       default:
           return "";
     }
@@ -32,11 +36,14 @@ function App() {
           setPreviousValue("");
           setCurrentValue(0);
         }
-          
+        else if (operator === "-") {
+          dispatch({type:"SUBSTRACT",payloadOne:parseInt(previousValue),payloadTwo:parseInt(currentValue)});
+          setPreviousValue(0);
+          setCurrentValue(0);
+        } 
   }
   
   const [result,dispatch] = useReducer(reducer,initialState);
-  console.log(result);
   return (
 
 
@@ -48,7 +55,7 @@ function App() {
           </div>
         <div className='grid grid-cols-4 gap-x-1 mt-1'>
           <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200' onClick={handleClick}>+</button>
-          <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200' >-</button>
+          <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200' onClick={handleClick}>-</button>
           <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200'>/</button>
           <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200'>*</button>
         </div>
