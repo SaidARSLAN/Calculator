@@ -22,10 +22,27 @@ const reducer = (state,action) => {
         }
         else {
           state.stateValue = state.stateValue * (action.payloadOne * action.payloadTwo);
+          return state
         }
-        return state
+      case "DIVIDE":
+        if (state.stateValue === 0 && state.stateControl) {
+          state.stateValue = (action.payloadOne * (1/action.payloadTwo));
+          state.stateControl = false;
+          return state
+        }
+        else {
+          if (action.payloadOne === 1) {
+            state.stateValue = state.stateValue * (1/action.payloadTwo);
+            return state
+          }
+          else {
+            state.stateValue = state.stateValue * 1/(action.payloadOne * (1/action.payloadTwo));
+            return state
+          }
+          
+        }
       default:
-          return "";
+          return console.log("gello");
     }
 }
 
@@ -58,9 +75,15 @@ function App() {
           setPreviousValue(1);
           setCurrentValue(1);
         }
+        else if (operator === "/") {
+          dispatch({type:"DIVIDE",payloadOne:parseInt(previousValue),payloadTwo:parseInt(currentValue)});
+          setPreviousValue(1);
+          setCurrentValue(1);
+        }
   }
   
   const [result,dispatch] = useReducer(reducer,initialState);
+  
   return (
 
 
@@ -73,7 +96,7 @@ function App() {
         <div className='grid grid-cols-4 gap-x-1 mt-1'>
           <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200' onClick={handleClick}>+</button>
           <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200' onClick={handleClick}>-</button>
-          <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200' >/</button>
+          <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200' onClick={handleClick}>/</button>
           <button className='bg-gray-300 px-12 py-4 text-2xl font-bold hover:bg-gray-500 duration-200' onClick={handleClick}>*</button>
         </div>
           <div className='grid grid-cols-3 gap-x-4 gap-y-1 mt-2'>
